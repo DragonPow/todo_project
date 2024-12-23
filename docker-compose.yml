@@ -1,0 +1,81 @@
+version: '3.9'
+
+services:
+  todo-web:
+    build:
+      context: .
+      dockerfile: ./app/todo/Dockerfile
+    image: todo-web
+    container_name: todo-web-container
+    depends_on:
+      - db-todo
+    ports:
+      - 8080:80
+      - 443:443
+    networks:
+      - todo-net
+    environment:
+      - SERVER.GRPC.PORT=443
+      - SERVER.HTTP.PORT=80
+      - DATABASE.HOST=db-todo
+      - DATABASE.PORT=5432
+    volumes:
+      - ./app/todo/:/app/todo/
+
+  # iam-web:
+  #   build:
+  #     context: .
+  #     dockerfile: /app/iam/Dockerfile
+  #   image: iam-web
+  #   container_name: iam-web-container
+  #   depends_on:
+  #     - db-iam
+  #   ports:
+  #     - 8081:80
+  #     - 444:443
+  #   environment:
+  #     - SERVER.GRPC.PORT=443
+  #     - SERVER.HTTP.PORT=80
+  #     - DATABASE.HOST=db-iam
+  #   networks:
+  #     - todo-net
+  #   volumes:
+  #     - /app/iam/:/app/iam/
+    
+  db-todo:
+    image: postgres:13
+    container_name: todo-db-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: todo
+      POSTGRES_PORT: 5432
+    ports:
+      - 5433:5432
+    networks:
+      - todo-net
+    volumes:
+      - todo-db:/var/lib/postgresql/data
+
+  # db-iam:
+  #   image: postgres:13
+  #   container_name: iam-db-container
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: 123456
+  #     POSTGRES_DB: iam
+  #     POSTGRES_PORT: 5432
+  #   ports:
+  #     - "5433:5432"
+  #   networks:
+  #     - todo-net
+  #   volumes:
+  #     - todo-db:/var/lib/postgresql/data
+
+volumes:
+  todo-db:
+  todo-iam:
+
+networks:
+  todo-net:
+    driver: bridge
