@@ -1,3 +1,14 @@
+# Technical usages
+
+- google `protobuf` + http `mux`: An definition API base Google, fast build API and easy start service
+  - I have custom for all API can send request through HTTP and gRPC protocol.
+- `migration`: allow build database faster, and safe with migration architecture.
+- `viper`: an libray in golang, allow to load config and mapping to struct easily.
+- `gorm`: an ORM for golang.
+- `docker`: deploy and setup database/service easy.
+- `postgresql`: database usage to save data.
+- `uber/zap`: logging for server, with fast and reduce allocated memory pointer
+
 # Architecture
 
 ## Todo service
