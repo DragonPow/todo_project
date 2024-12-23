@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package DragonPow.app.todo.api;
+option go_package = "app/todo/api";
+
+import "google/api/annotations.proto";
+import "google/rpc/code.proto";
+
+service TodoService {
+    rpc CreateTodo (CreateTodoRequest) returns (CreateTodoResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/todos"
+            body: "*"
+        };
+    }
+    rpc GetTodo (GetTodoRequest) returns (GetTodoResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/todos/{id}"
+        };
+    }
+    rpc ListTodos (ListTodosRequest) returns (ListTodosResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/todos"
+        };
+    }
+    rpc UpdateTodo (UpdateTodoRequest) returns (UpdateTodoResponse) {
+        option (google.api.http) = {
+            put: "/api/v1/todos/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteTodo (DeleteTodoRequest) returns (DeleteTodoResponse) {
+        option (google.api.http) = {
+            delete: "/api/v1/todos/{id}"
+        };
+    }
+}
+
+message Todo {
+    int32 id = 1; // Read only
+    string title = 2;
+    string description = 3;
+    bool completed = 4;
+    string createdAt = 5; // Read only
+    string updatedAt = 6; // Read only
+    string completedAt = 7; // Read only
+    repeated Item items = 8; // Only response this field when get detail or create todo
+}
+
+message Item {
+    int32 id = 1;
+    string title = 2;
+    bool completed = 3;
+    string createdAt = 4; // Read only
+    string updatedAt = 5; // Read only
+    string completedAt = 6; // Read only
+}
+
+message CreateTodoRequest {
+    Todo todo = 1;
+}
+
+message CreateTodoResponse {
+    google.rpc.Code code = 1;
+    string message = 2;
+    Todo todo = 3;
+}
+
+message GetTodoRequest {
+    int32 id = 1;
+}
+
+message GetTodoResponse {
+    google.rpc.Code code = 1;
+    string message = 2;
+    Todo todo = 3;
+}
+
+message ListTodosRequest {
+    string likeTitle = 1;
+}
+
+message ListTodosResponse {
+    google.rpc.Code code = 1;
+    string message = 2;
+    repeated Todo todos = 3;
+}
+
+message UpdateTodoRequest {
+    int32 id = 1;
+    string title = 2;
+    string description = 3;
+    bool completed = 4;
+}
+
+message UpdateTodoResponse {
+    google.rpc.Code code = 1;
+    string message = 2;
+    Todo todo = 3;
+}
+
+message DeleteTodoRequest {
+    int32 id = 1;
+}
+
+message DeleteTodoResponse {
+    google.rpc.Code code = 1;
+    string message = 2;
+}

@@ -1,0 +1,18 @@
+SERVER:
+  GRPC:
+    PORT: 8081
+    HOST: 0.0.0.0
+  HTTP:
+    PORT: 8080
+    HOST: 0.0.0.0
+
+LOG:
+  ENV: dev
+  LEVEL: debug
+
+DATABASE:
+  HOST: localhost
+  PORT: 5433
+  USER_NAME: postgres
+  PASSWORD: 123456
+  DB_NAME: todo
